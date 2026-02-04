@@ -1,0 +1,248 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ================= BASE ================= */
+html, body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont;
+  background: radial-gradient(circle at top, #0f172a 0%, #020617 60%);
+  color: #e5e7eb;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ================= GLOBAL CYBER GRID (FULL SITE) ================= */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ================= NEON GLOW ================= */
+.neon-glow {
+  box-shadow:
+    0 0 20px rgba(203, 161, 242, 0.388),
+    0 0 40px rgba(168,85,247,0.3);
+}
+
+/* ================= CAR LIGHT TRAILS ================= */
+@keyframes moveRight {
+  0% {
+    transform: translateX(-300px);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  100% {
+    transform: translateX(130vw);
+    opacity: 0;
+  }
+}
+
+.car-trail {
+  position: absolute;
+  left: 0;
+  height: 3px;
+  width: 280px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(247, 85, 85, 0.9),
+    transparent
+  );
+  filter: blur(1px);
+  animation: moveRight 12s linear infinite;
+  opacity: 0.85;
+  z-index: 1;
+}
+
+.car-trail.delay {
+  animation-delay: 6s;
+  top: 65%;
+}
+
+/* ================= SOLAR SYSTEM ORBITS ================= */
+@keyframes orbitRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.orbit-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(9, 201, 239, 0.826);
+  animation: orbitRotate linear infinite;
+}
+
+.orbit.slow {
+  width: 520px;
+  height: 520px;
+  animation-duration: 60s;
+}
+
+.orbit.fast {
+  width: 720px;
+  height: 720px;
+  animation-duration: 90s;
+}
+
+.orbit .planet {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: rgba(168,85,247,0.9);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 25px rgba(20, 230, 249, 0.9);
+}
+
+/* ================= MOBILE SAFETY ================= */
+@media (max-width: 768px) {
+  .car-trail,
+  .orbit-wrapper {
+    display: none;
+  }
+}
+
+.parallax-slow {
+  transform: translate(
+    calc(var(--px) * 0.3),
+    calc(var(--py) * 0.3)
+  );
+}
+
+.parallax-medium {
+  transform: translate(
+    calc(var(--px) * 0.6),
+    calc(var(--py) * 0.6)
+  );
+}
+
+.parallax-fast {
+  transform: translate(
+    calc(var(--px) * 1),
+    calc(var(--py) * 1)
+  );
+}
+
+.parallax-transition {
+  transition: transform 0.15s ease-out;
+}
+
+/* =========================================================
+   =============== ADDITIONS START HERE ====================
+   ========================================================= */
+
+/* ===== GLOBAL PARALLAX VARIABLES ===== */
+:root {
+  --px: 0px;
+  --py: 0px;
+  --mx: 50vw;
+  --my: 50vh;
+}
+
+/* ===== GPU ACCELERATION FOR SMOOTH MOTION ===== */
+.parallax-slow,
+.parallax-medium,
+.parallax-fast,
+.parallax-transition {
+  will-change: transform;
+}
+
+/* ===== MOUSE FOLLOWING GLOW SUPPORT ===== */
+.mouse-glow {
+  mix-blend-mode: screen;
+  will-change: transform;
+  filter: blur(140px);
+}
+
+/* ===== CINEMATIC VIGNETTE (DEPTH BOOST) ===== */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at center,
+    transparent 40%,
+    rgba(242, 242, 242, 0)
+  );
+  z-index: 0;
+}
+
+/* ===== ISOLATE CONTENT FROM GLOW ===== */
+main,
+section {
+  isolation: isolate;
+}
+
+/* ===== SAFETY: DISABLE HEAVY EFFECTS ON MOBILE ===== */
+@media (max-width: 768px) {
+  .mouse-glow {
+    display: none;
+  }
+}
+
+/* ================= STRICT HR MODE ================= */
+.hr-mode video {
+  display: none;
+}
+
+.hr-mode .cursor-particles,
+.hr-mode .cursor-glow {
+  display: none;
+}
+
+.hr-mode .neon-glow {
+  box-shadow: none !important;
+}
+
+/* ================= CREATIVE MODE ================= */
+.creative-mode video {
+  display: block;
+}
+
+.creative-mode .cursor-particles,
+.creative-mode .cursor-glow {
+  display: block;
+}
+
+.cursor-glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(34,197,94,0.25), transparent 60%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.disable-bg-video video {
+  display: none !important;
+}
